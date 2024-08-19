@@ -22,7 +22,6 @@ st.markdown(
     <style>
     .chat-window {
         background-color: white;
-        border: 1px solid #e0e0e0;
         border-radius: 10px;
         padding: 15px;
         max-width: 600px;
@@ -34,14 +33,17 @@ st.markdown(
         padding: 10px;
         margin: 5px 0;
         max-width: 75%;
+        color: black;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
     }
     .character-a {
-        background-color: #d1e7dd;
+        background-color: #DCF8C6;  /* Light green */
         text-align: left;
         margin-left: 0;
     }
     .character-b {
-        background-color: #f8d7da;
+        background-color: #A3E4B8;  /* Darker green */
         text-align: right;
         margin-left: auto;
     }
