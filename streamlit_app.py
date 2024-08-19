@@ -79,7 +79,7 @@ if openai_api_key and character_a and character_b and setting:
             css_class = "character-b"
         result = model.invoke(history)
         content = result.content
-        st.markdown(f'<div class="message {css_class}"><strong>{character}</strong>: </br>{content}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="message {css_class}"><strong>{character}</strong>: </br>{"\n".join(content.split('. '))}</div>', unsafe_allow_html=True)
         history.append(AIMessage(content=content))
         opposite_history.append(HumanMessage(content=content))
         conversation_pairs += 1
