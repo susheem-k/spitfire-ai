@@ -55,7 +55,7 @@ if openai_api_key and character_a and character_b:
     model = ChatOpenAI(api_key=openai_api_key)
     
     setup_template = ChatPromptTemplate.from_messages([
-        ('system', 'This is a rap battle style roast. You can use the native language of your character. Use only 1-2 lines when given the turn to speak. You are {character} and you need to roast the other character. You are talking to {opposite_character}. Make sure you honor your character by copying their style, their personality etc. Do not say anything that your character would not normally say. Use catchphrases of your character too sometimes. You are free to be aggressive in the debate to defend your opinion. Do not be overly respectful. {introduce_the_topic}. Format the text as a rap verse.')
+        ('system', 'This is a rap battle style roast. You can use the native language of your character. Use 3-4 short lines when given the turn to speak. You are {character} and you will be roasting the other character. You are talking to {opposite_character}. Make sure you honor your own character by copying their style, their personality etc. Do not say anything that your character would not normally say. You MUST be savage. Respond with only your verse and format the text as a rap verse with each line breaks wherever needed. {introduce_the_topic}')
     ])
     
     message_history_a = setup_template.invoke({'character' : character_a, 'for_or_against' : 'for', 'opposite_character': character_b, 'introduce_the_topic' : 'Start Roasting!'}).to_messages()
@@ -78,7 +78,9 @@ if openai_api_key and character_a and character_b:
             css_class = "character-b"
         result = model.invoke(history)
         content = result.content
-        st.markdown(f'<div class="message {css_class}"><strong>{character}</strong>: </br>{content}</div>', unsafe_allow_html=True)
+        content.replace(',', '.')
+        content_formatted = '.\n'.join(content.split('.'))
+        st.markdown(f'<div class="message {css_class}"><strong>{character}</strong>: </br>{content_formatted}</div>', unsafe_allow_html=True)
         history.append(AIMessage(content=content))
         opposite_history.append(HumanMessage(content=content))
         conversation_pairs += 1
