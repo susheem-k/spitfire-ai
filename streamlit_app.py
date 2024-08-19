@@ -1,5 +1,10 @@
 import streamlit as st
-from openai import OpenAI
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
+from langchain_core.output_parsers  import  StrOutputParser
+from langchain_core.runnables import RunnableLambda
+from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
+from random import randint
 
 # Show title and description.
 st.title("💬 Spitfire : AI Rap Battle-room")
