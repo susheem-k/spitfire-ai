@@ -17,6 +17,38 @@ character_a = st.text_input("Who is the first character(fighting for the motion)
 character_b = st.text_input("Who is the second character(fighting against the motion)? : ")
 setting = st.text_input("What is the topic? : ")
 
+st.markdown(
+    """
+    <style>
+    .chat-window {
+        background-color: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 15px;
+        max-width: 600px;
+        margin: auto;
+        box-shadow: 2px 2px 12px rgba(0,0,0,0.1);
+    }
+    .message {
+        border-radius: 15px;
+        padding: 10px;
+        margin: 5px 0;
+        max-width: 75%;
+    }
+    .character-a {
+        background-color: #d1e7dd;
+        text-align: left;
+        margin-left: 0;
+    }
+    .character-b {
+        background-color: #f8d7da;
+        text-align: right;
+        margin-left: auto;
+    }
+    </style>
+    """, unsafe_allow_html=True
+)
+
 if openai_api_key and character_a and character_b and setting:
     # Set up the OpenAI client
     model = ChatOpenAI(api_key=openai_api_key)
@@ -32,26 +64,25 @@ if openai_api_key and character_a and character_b and setting:
     
     turn_queue.append('a')
     turn_queue.append('b')
-    
+
+    st.markdown('<div class="chat-window">', unsafe_allow_html=True)
+
     conversation_pairs = 0
     while len(turn_queue) != 0:
         turn = turn_queue.pop(0)
         turn_queue.append(turn)
         if turn == 'a':
             history, character, opposite_history = message_history_a, character_a, message_history_b
+            css_class = "character-a"
         else:
             history, character, opposite_history = message_history_b, character_b, message_history_a
+            css_class = "character-b"
         result = model.invoke(history)
         content = result.content
-        if turn == 'a':
-            st.markdown(f"**{character_a}**: {content}")
-        else:
-            st.markdown(f"**{character_b}**: {content}")
+        st.markdown(f'<div class="message {css_class}"><strong>{character}</strong>: {content}</div>', unsafe_allow_html=True)
         history.append(AIMessage(content=content))
         opposite_history.append(HumanMessage(content=content))
         conversation_pairs += 1
         print(conversation_pairs)
         if conversation_pairs % 4 == 0:
-            should_stop_now = st.button('End the rap battle')
-            if should_stop_now:
-                break
+            break
