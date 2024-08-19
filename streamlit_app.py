@@ -7,15 +7,14 @@ from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from random import randint
 
 # Show title and description.
-st.title("💬 Spitfire : AI Rap Battle-room")
+st.title("💬 Spitfire : AI Roast-ery")
 
 # Ask user for their OpenAI API key via `st.text_input`.
 # Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
 # via `st.secrets`, see https://docs.streamlit.io/develop/concepts/connections/secrets-management
 openai_api_key = st.text_input("OpenAI API Key", type="password")
-character_a = st.text_input("Who is the first character(fighting for the motion)? : ")
-character_b = st.text_input("Who is the second character(fighting against the motion)? : ")
-# setting = st.text_input("What is the topic? : ")
+character_a = st.text_input("Who is the first character? : ")
+character_b = st.text_input("Who is the second character? : ")
 
 st.markdown(
     """
@@ -51,7 +50,7 @@ st.markdown(
     """, unsafe_allow_html=True
 )
 
-if openai_api_key and character_a and character_b and setting:
+if openai_api_key and character_a and character_b:
     # Set up the OpenAI client
     model = ChatOpenAI(api_key=openai_api_key)
     
@@ -59,8 +58,8 @@ if openai_api_key and character_a and character_b and setting:
         ('system', 'This is a rap battle style roast. You can use the native language of your character. Use only 1-2 lines when given the turn to speak. You are {character} and you need to roast the other character. You are talking to {opposite_character}. Make sure you honor your character by copying their style, their personality etc. Do not say anything that your character would not normally say. Use catchphrases of your character too sometimes. You are free to be aggressive in the debate to defend your opinion. Do not be overly respectful. {introduce_the_topic}. Format the text as a rap verse.')
     ])
     
-    message_history_a = setup_template.invoke({'character' : character_a, 'setting' : setting, 'for_or_against' : 'for', 'opposite_character': character_b, 'introduce_the_topic' : 'Start Roasting!'}).to_messages()
-    message_history_b = setup_template.invoke({'character' : character_b, 'setting' : setting, 'for_or_against' : 'against', 'opposite_character': character_a, 'introduce_the_topic' : ''}).to_messages()
+    message_history_a = setup_template.invoke({'character' : character_a, 'for_or_against' : 'for', 'opposite_character': character_b, 'introduce_the_topic' : 'Start Roasting!'}).to_messages()
+    message_history_b = setup_template.invoke({'character' : character_b, 'for_or_against' : 'against', 'opposite_character': character_a, 'introduce_the_topic' : ''}).to_messages()
     
     turn_queue = []
     
