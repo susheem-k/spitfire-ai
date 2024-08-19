@@ -67,8 +67,6 @@ if openai_api_key and character_a and character_b and setting:
     turn_queue.append('a')
     turn_queue.append('b')
 
-    st.markdown('<div class="chat-window">', unsafe_allow_html=True)
-
     conversation_pairs = 0
     while len(turn_queue) != 0:
         turn = turn_queue.pop(0)
